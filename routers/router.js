@@ -1,6 +1,6 @@
 const Post = require('../models/Post');
 
-module.exports = function (app) {
+module.exports = (app)=> {
 
     /**
      * carrega o form para add post
