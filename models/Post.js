@@ -8,4 +8,6 @@ const Post = db.conexao.define('post', {
         type: db.sequilize.TEXT
     }
 });
+
+module.exports = Post;
 // Post.sync(); --> criar model
