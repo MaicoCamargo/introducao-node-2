@@ -15,5 +15,5 @@ const Categoria = new Schema({
         default: Date.now()
     }
 });
-console.log('criando categoria');
+
 mongoose.model('categorias',Categoria);
