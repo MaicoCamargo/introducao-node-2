@@ -7,7 +7,6 @@ const path = require('path');
 const flash = require('connect-flash');
 const session = require('express-session');
 const sessao_app = require('./../config/session');
-const midd = require('./../config/middleware');
 require('./db');
 
 const SERVER_PORT = 8081;
