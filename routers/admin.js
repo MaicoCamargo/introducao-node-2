@@ -44,11 +44,16 @@ router.get('/categorias/adicionar-categoria', (request, response) => {
  */
 router.post('/categorias/adicionar-categoria', (request, response) => {
 
+    let nome =request.body.nome;
+    let slug = request.body.slug;
+
+    slug = slug.replace(' ','-');
+
     let erros = [];
-    if (!request.body.nome || request.body.nome < 2) {
+    if (!nome || nome < 2) {
         erros.push({texto: 'nome invalido, insira um nome valido'})
     }
-    if (!request.body.slug || request.body.slug < 2) {
+    if (!slug || slug < 2) {
         erros.push({texto: 'slug invalido, insira um slug valido'})
     }
 
@@ -56,8 +61,8 @@ router.post('/categorias/adicionar-categoria', (request, response) => {
         response.render('admin/form-categoria', {erros: erros});
     } else {
         const nova = ({
-            nome: request.body.nome,
-            slug: request.body.slug,
+            nome: nome,
+            slug: slug,
         });
 
         new Categoria(nova).save()
@@ -95,6 +100,9 @@ router.get('/categorias/editar-categoria/:id', (request, response) => {
 
 });
 
+/**
+ * salvar dados da edição de uma categoria
+ */
 router.post('/categorias/editar-categoria', (request, response) => {
     console.log(request.body);
     Categoria.findOne({id: request.body.id})
@@ -121,6 +129,19 @@ router.post('/categorias/editar-categoria', (request, response) => {
             console.log('erro findOne:' + err);
             request.flash('error_msg', 'erro no editar categoria');
             response.redirect('/admin/categorias');
+        });
+});
+
+router.get('/admin/categorias/remover-categoria', (request, response) =>{
+
+    Categoria.delete({_id: request.body.id})
+        .then(() =>{
+            request.flash('success_msg','categoria removida com sucesso');
+            request.redirect('/admin/categorias');
+        })
+        .catch(() =>{
+            request.flash('error_msg','erro no remover categoria, tente novamente');
+            request.redirect('/admin/categorias');
         });
 });
 

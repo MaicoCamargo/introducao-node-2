@@ -2,7 +2,7 @@
 <ul class="list-group">
     <li class="list-group-item d-flex justify-content-between align-items-center">
 
-        <span class="badge badge-success badge-pill"><a class="btn text-muted" href="categorias/adicionar-categoria">+ categoria</a>
+        <span class="badge badge-success badge-pill"><a class="text-muted" href="categorias/adicionar-categoria">+ categoria</a>
 </span>
     </li>
 </ul>
@@ -10,7 +10,9 @@
     <ul class="list-group">
         <li class="list-group-item d-flex justify-content-between align-items-center">
             <span><b> Nome: </b>{{nome}}</span> <span><b> Slug: </b>{{slug}} </span> <span><b> Data criação: </b>{{data}}</span>
-            <span class="badge badge-info badge-pill"><a  class="btn text-muted" href="/admin/categorias/editar-categoria/{{id}}">editar</a> </span>
+            <span class="badge badge-dark badge-pill">
+                <a  class=" text-info" href="/admin/categorias/editar-categoria/{{id}}">editar</a> <b class="text-dark">|</b>
+                <a  class=" text-danger" href="/admin/categorias/remover-categoria/{{id}}">remover</a> </span>
         </li>
     </ul>
 
