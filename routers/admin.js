@@ -23,7 +23,7 @@ router.get('/posts', (request,response) =>{
  * carrega a pag com a lista das categorias
  */
 router.get('/categorias', (request,response) =>{
-    Categoria.find()
+    Categoria.find().sort({data:'desc'})
         .then( (categorias) => response.render('admin/categorias-list',{categorias: categorias}))
         .catch( () => {
             request.flash('error_msg','erro no listar as categorias');
@@ -72,6 +72,26 @@ router.post('/categorias/adicionar-categoria', (request,response) =>{
 
             });
     }
+
+
+});
+
+/**
+ * carregar a pagina com form para editar categoria
+ */
+router.get('/categorias/editar-categoria/:id', (request,response) => {
+
+    Categoria.findOne({_id: request.params.id})
+        .then( (resultado) => {
+            console.log(resultado.nome);
+            console.log(resultado.slug);
+            response.render('admin/categoria-edit',{categoria: resultado});
+        })
+        .catch( () => {
+
+            request.flash('error_msg','está categoria não foi encontrada');
+            response.redirect('admin/categorias');
+        });
 
 
 });
