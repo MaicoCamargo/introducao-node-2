@@ -1,3 +1,19 @@
 <h2>Categorias</h2>
+<ul class="list-group">
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        <b>Nome </b> <b>Slug</b> <b>Data de criação</b>
+        <span class="badge badge-success badge-pill"><a class="btn text-muted" href="categorias/adicionar-categoria">+ categoria</a>
+</span>
+    </li>
+</ul>
+{{#each categorias}}
+    <ul class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span><b> Nome: </b>{{nome}}</span> <span><b> Slug: </b>{{slug}}</span> <span><b> Data criação: </b>{{data}}</span>
+            <span class="badge badge-info badge-pill">editar</span>
+        </li>
+    </ul>
 
-<button class="btn btn-success">+ categoria</button>
+{{else}}
+    <p class="text-muted">não existem categorias para listar</p>
+{{/each}}

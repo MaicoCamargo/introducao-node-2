@@ -23,7 +23,13 @@ router.get('/posts', (request,response) =>{
  * carrega a pag com a lista das categorias
  */
 router.get('/categorias', (request,response) =>{
-    response.render('admin/categorias-list');
+    Categoria.find()
+        .then( (categorias) => response.render('admin/categorias-list',{categorias: categorias}))
+        .catch( () => {
+            request.flash('error_msg','erro no listar as categorias');
+            response.render('/categorias');
+        });
+
 });
 
 /**
@@ -37,13 +43,36 @@ router.get('/categorias/adicionar-categoria', (request,response) =>{
  * salva uma nova categoria no banco
  */
 router.post('/categorias/adicionar-categoria', (request,response) =>{
-    const nova = ({
-        nome: request.body.nome,
-        slug: request.body.slug,
-    });
 
-    new Categoria(nova).save()
-        .then( ()=> console.log('sucesso'))
-        .catch( (err) => console.log('erro'+ err));
+    let erros =[];
+    if(!request.body.nome || request.body.nome < 2){
+        erros.push({ texto: 'nome invalido, insira um nome valido'})
+    }
+    if (!request.body.slug || request.body.slug < 2){
+        erros.push({texto: 'slug invalido, insira um slug valido'})
+    }
+
+    if (erros.length > 0) { response.render('admin/form-categoria', {erros: erros});}
+
+    else {
+        const nova = ({
+            nome: request.body.nome,
+            slug: request.body.slug,
+        });
+
+        new Categoria(nova).save()
+            .then( ()=> {
+                request.flash('success_msg','categoria cadastrada com sucesso');
+                response.redirect('/admin/categorias');
+
+            })
+            .catch( (err) => {
+                request.flash('error_msg','ocorreu um erro no cadastrar categoria, tente novamente');
+                response.redirect('/admin/categorias');
+
+            });
+    }
+
+
 });
 module.exports = router;

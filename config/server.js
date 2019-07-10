@@ -22,10 +22,11 @@ module.exports = () => {
 
     //middleware
     app.use((request, response, next) => {
-        response.locals.success = response.flash('success_msg');
-        response.locals.error = response.flash('error_msg');
+        response.locals.success_msg = request.flash('success_msg'); // -> criando variavel global para exibir mensagem na tela
+        response.locals.error_msg = request.flash('error_msg'); // -> criando variavel global para exibir mensagem na tela
         next();
     });
+
     //app engine
     app.engine('handlebars', handleBar({defaultLayout: 'main'}));
     app.set('view engine', 'handlebars');
