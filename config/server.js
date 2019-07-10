@@ -25,8 +25,7 @@ module.exports = () => {
     rotas(app);
 
     //arquivos staticos - css,icons, imgs
-    app.use(express.static(path.join(__dirname,'static')));
-
+    app.use(express.static(path.join(__dirname,'../static')));
 
     //rodar server
     app.listen(SERVER_PORT, () => {

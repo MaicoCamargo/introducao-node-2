@@ -6,7 +6,7 @@ module.exports = (app)=> {
      * carrega o form para add post
      */
     app.get('/', function (request, response) {
-        response.render('form-post');
+        response.render('layouts/form-post');
     });
 
     /**
@@ -30,7 +30,7 @@ module.exports = (app)=> {
     app.get('/posts', function (req, res) {
 
         Post.findAll({order: [['id', 'ASC']]}).then(function (posts) {
-            res.render('posts-list', {posts: posts});
+            res.render('layouts/posts-list', {posts: posts});
         }).catch(function () {
             console.log('erro no listar');
         });
@@ -42,7 +42,7 @@ module.exports = (app)=> {
     app.get('/delete/:id', function (req, res) {
 
         Post.destroy({where:{'id': req.params.id}}).then(function (posts) {
-            res.redirect('/posts');
+            res.redirect('layouts/posts');
         }).catch(function () {
             console.log('erro no deletar');
         });

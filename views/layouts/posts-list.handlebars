@@ -1,0 +1,9 @@
+<h1>POSTS</h1>
+
+{{#each posts}}
+    <p><b>Titulo</b> {{titulo}}</p>
+
+    <h4>Conteudo</h4>
+    <p>->  {{conteudo}}</p>
+    <a href="/delete/{{id}}">remover</a>
+{{/each}}
