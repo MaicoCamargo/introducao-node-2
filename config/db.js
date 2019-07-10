@@ -1,7 +1,8 @@
-const Sequelize = require('sequelize');
-const conexaoDB = new Sequelize('curso_node_yt', 'admin', 'admin', {
-    host: '127.0.0.1',
-    dialect: 'mysql'
-});
+const mongoose = require('mongoose');
 
-module.exports = { conexao: conexaoDB, sequilize: Sequelize };
+mongoose.Promise = global.Promise;
+mongoose.connect('mongodb://127.0.0.1/curso_node', { useNewUrlParser: true }).then(
+    () => console.log('conectado com mongo db')).catch(
+        (err) => console.log('erro no conectar com mongo db' + err));
+
+module.exports = mongoose;

@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const rotasAdmin = require('../routers/admin');
 const path = require('path');
 
+require('./db');
+
 const SERVER_PORT = 8081;
 
 module.exports = () => {
@@ -26,7 +28,6 @@ module.exports = () => {
 
     //arquivos staticos - css,icons, imgs
     app.use(express.static(path.join(__dirname,'../static')));
-
     //rodar server
     app.listen(SERVER_PORT, () => {
         console.log('    -> server rodando '+ SERVER_PORT);
