@@ -3,10 +3,13 @@ const express = require('express');
 const router = express.Router();
 
 //como carregar uma collection do mongo
-require('./../models/Categoria'); // carregar categoria
 const mongoose = require('mongoose'); // carregar o moongose
+
+require('./../models/Categoria'); // carregar categoria
 const Categoria = mongoose.model('categorias'); // criar referencia da collection
 
+require('./../models/Postagem');
+const Post = mongoose.model('postagens');
 
 /**
  * carrega a tela inicial do admin
@@ -18,6 +21,55 @@ router.get('/', (request, response) => {
 router.get('/posts', (request, response) => {
     response.send('home');
 });
+
+/**
+ * carrega o form de criar post
+ */
+router.get('/posts/criar-post', (request, response) => {
+    Categoria.find()
+        .then((resultado) => {
+            response.render('admin/form-post', {categorias: resultado});
+        })
+        .catch(() => {
+            console.log('erro no trazer as postagens do mongo');
+        });
+});
+
+/**
+ * criar um novo post no banco
+ */
+router.post('/posts/criar-post', (request, response) => {
+
+    let erros = [];
+
+    if (request.body.categoria === '0') {
+        erros.push({texto: 'categoria não encontrada'});
+        response.redirect('/admin/posts/criar-post', {erros: erros});
+    } else {
+
+        const novoPost = ({
+            titulo: request.body.titulo,
+            slug: request.body.slug,
+            descricao: request.body.descricao,
+            conteudo: request.body.conteudo,
+            categoria: request.body.categoria,
+        });
+
+        new Post(novoPost).save()
+            .then(() => {
+                request.flash('success_msg', 'post realizado com sucesso');
+                response.redirect('/admin/posts/criar-post')
+            })
+            .catch((err) => {
+                console.log(err);
+                request.flash('error_msg', 'ocorreu um erro no cadastro do post');
+                response.redirect('/admin/posts/criar-post')
+            });
+
+    }
+
+});
+
 
 /**
  * carrega a pag com a lista das categorias
@@ -44,10 +96,10 @@ router.get('/categorias/adicionar-categoria', (request, response) => {
  */
 router.post('/categorias/adicionar-categoria', (request, response) => {
 
-    let nome =request.body.nome;
+    let nome = request.body.nome;
     let slug = request.body.slug;
 
-    slug = slug.replace(' ','-');
+    slug = slug.replace(' ', '-');
 
     let erros = [];
     if (!nome || nome < 2) {
@@ -132,15 +184,15 @@ router.post('/categorias/editar-categoria', (request, response) => {
         });
 });
 
-router.get('/categorias/remover-categoria/:id', (request, response) =>{
+router.get('/categorias/remover-categoria/:id', (request, response) => {
 
     Categoria.deleteOne({_id: request.params.id})
-        .then(() =>{
-            request.flash('success_msg','categoria removida com sucesso');
+        .then(() => {
+            request.flash('success_msg', 'categoria removida com sucesso');
             response.redirect('/admin/categorias');
         })
-        .catch(() =>{
-            request.flash('error_msg','erro no remover categoria, tente novamente');
+        .catch(() => {
+            request.flash('error_msg', 'erro no remover categoria, tente novamente');
             response.redirect('/admin/categorias');
         });
 });
