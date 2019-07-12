@@ -132,16 +132,16 @@ router.post('/categorias/editar-categoria', (request, response) => {
         });
 });
 
-router.get('/admin/categorias/remover-categoria', (request, response) =>{
+router.get('/categorias/remover-categoria/:id', (request, response) =>{
 
-    Categoria.delete({_id: request.body.id})
+    Categoria.deleteOne({_id: request.params.id})
         .then(() =>{
             request.flash('success_msg','categoria removida com sucesso');
-            request.redirect('/admin/categorias');
+            response.redirect('/admin/categorias');
         })
         .catch(() =>{
             request.flash('error_msg','erro no remover categoria, tente novamente');
-            request.redirect('/admin/categorias');
+            response.redirect('/admin/categorias');
         });
 });
 
